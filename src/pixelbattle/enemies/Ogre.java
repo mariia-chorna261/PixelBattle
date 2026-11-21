@@ -4,6 +4,8 @@ import pixelbattle.core.Enemy;
 import pixelbattle.core.Skill;
 import pixelbattle.core.Target;
 import pixelbattle.engine.Sprite;
+import pixelbattle.core.Fighter;
+import pixelbattle.core.Ultimate;
 
 /** Огр — бос. Повільний, але дуже сильний. */
 public class Ogre extends Enemy {
@@ -17,6 +19,29 @@ public class Ogre extends Enemy {
             return user.getName() + " б'є кийком " + target.getName() + ": "
                     + target.takeDamage(dmg) + " шкоди";
         }));
+        setUltimate(new Ultimate() {
+            @Override
+            public String getName() {
+                return "Землетрус";
+            }
+
+            @Override
+            public String getDescription() {
+                return "12 шкоди всім героям і лікування на 20 HP";
+            }
+
+            @Override
+            public String activate(Fighter user, Fighter[] allies, Fighter[] enemies) {
+                int total = 0;
+                for (Fighter e : enemies) {
+                    if (e.isAlive()) {
+                        total += e.takeDamage(12);
+                    }
+                }
+                int healed = user.heal(20);
+                return user.getName() + " викликає Землетрус (" + total + " шкоди) і лікується на " + healed + " HP";
+            }
+        });
 
         // TODO 10: ультимейт «Землетрус» — АНОНІМНИЙ КЛАС:
         //   кожному живому герою 12 шкоди, а сам огр лікується на 20.

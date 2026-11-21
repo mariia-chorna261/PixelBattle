@@ -4,6 +4,7 @@ import pixelbattle.core.Hero;
 import pixelbattle.core.Skill;
 import pixelbattle.core.Target;
 import pixelbattle.engine.Sprite;
+import pixelbattle.ultimates.Meteor;
 
 /** Маг — потужні заклинання та лікування. */
 public class Mage extends Hero {
@@ -14,6 +15,17 @@ public class Mage extends Hero {
         addSkill(new Skill("Удар посохом", Target.ENEMY, 0, (user, target) ->
                 user.getName() + " б'є посохом " + target.getName() + ": "
                         + target.takeDamage(random(6, 10)) + " шкоди"));
+        addSkill(new Skill("Вогняна куля", Target.ENEMY, 1, (user, target) -> {
+            int dmg = target.takeDamage(random(22, 30));
+            return user.getName() + " кидає вогняну кулю в " + target.getName() + ": " + dmg + " шкоди";
+        }));
+
+        addSkill(new Skill("Зцілення", Target.ALLY, 2, (user, target) -> {
+            int healed = target.heal(25);
+            return user.getName() + " зцілює " + target.getName() + " на " + healed + " HP";
+        }));
+
+        setUltimate(new Meteor());
 
         // TODO 2: два вміння ЛЯМБДАМИ:
         //   «Вогняна куля» (Target.ENEMY, перезарядка 1) — 22..30 шкоди;
